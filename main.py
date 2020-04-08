@@ -1,8 +1,17 @@
 from user import User
 import re
-from pathlib import Path
+import os.path
+from os import path
+
+pattern = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
+email_valid = True
+
 
 def main():
+    
+    if not os.path.exists('login_system/users'):
+        os.mkdir('login_system/users')
+
     user_input = input("login, add, remove or edit: ").lower()
 
     if user_input == "login":
@@ -15,11 +24,16 @@ def main():
         user_edit()
 
     
+
+    
     
 def create_user():
     username = input("Wpisz nazwę użytkownika: ")
     userpass = input("Wpisz hasło: ")
     useremail = input("Wpisz email: ")
+    if not validate_email(useremail):
+        print("Invalid email... retype")
+        useremail = input("Wpisz email: ")
 
     name = User(username,userpass,useremail)
 
@@ -28,7 +42,7 @@ def create_user():
 
     print(f"Created new user: {name.name}")
 
-    with open("Login-system/users/" + name.name + ".txt", "w") as f:
+    with open("login_system/users/" + name.name + ".txt", "w") as f:
         f.write(name.name)
         f.write("\n")
         f.write(name.password)
@@ -39,7 +53,7 @@ def login():
     username_input = input("Wpisz nazwę użytkownika: ")
     while True:
         try:
-            with open("Login-system/users/" + username_input + ".txt", "r") as f:
+            with open("login_system/users/" + username_input + ".txt", "r") as f:
                 user_file = f.readlines()
             userpassword_input = input("Password: ")
             if username_input == user_file[0].replace("\n", "") and userpassword_input == user_file[1].replace("\n", ""):
@@ -53,11 +67,18 @@ def login():
             break
         
 def remove_user():
+    
     return
 def user_edit():
     return
 
-def validate_email():
+def validate_email(email):
+    global email_valid
+    if re.search(pattern, email):
+        email_valid = True
+    else:
+        email_valid = False
+
     return
 
 main()
