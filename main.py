@@ -1,4 +1,5 @@
 #Kamil Hamerlak, April 2020
+#Practice project
 
 from user import User
 import re
