@@ -149,6 +149,8 @@ def create_root():
             root_file.write(root.password)
             root_file.write("\n")
             root_file.write(root.email)
+            root_file.write("\n")
+            root_file.write("root")
     except:
         print("Something went wrong in create_root() function")
 
